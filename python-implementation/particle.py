@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.linalg
 import sys
 
+
 class Particle:
     """
     This class is an implementation of the "particles" in the particle swarm optimization algorithm.
@@ -47,3 +48,16 @@ class Particle:
         """
         self.velocity = self.w * self.velocity + self.c1 * random.uniform(-0.5, 0.5) * (self.pbest - self.position) \
                         + self.c2 * random.uniform(-0.5, 0.5) * (gbest - self.position)
+
+    def updatePosition(self):
+        """
+        function to update the position of the particle according to the following expression:
+
+        Position(T+1) = Position(T) + Velocity(T+1)
+
+        NOTE: As you can see from the above expression, the position update has to be made only after the velocity is
+        updated, so call this function only after the velocity has been updated.
+
+        :return:
+        """
+        self.position = self.position + self.velocity
