@@ -2,6 +2,7 @@ from numpy import *
 import matplotlib.pyplot as plt
 import scipy.linalg
 import sys
+import math
 
 
 class Particle:
@@ -38,6 +39,8 @@ class Particle:
         self.w = w  # storing w as global class variable
         self.c1 = c1  # storing c1 as global class variable
         self.c2 = c2  # storing c2 as global class variable
+        self.bounds = bounds  # storing bounds for use in update position function
+        self.dimension = dimension  # storing dimensions for use in update position function
 
     def updateVelocity(self, gbest):
         """
@@ -47,8 +50,8 @@ class Particle:
 
         :param gbest: global best position of the swarm
         """
-        self.velocity = self.w * self.velocity + self.c1 * random.uniform(-0.5, 0.5) * (self.pbest - self.position) \
-                        + self.c2 * random.uniform(-0.5, 0.5) * (gbest - self.position)
+        self.velocity = self.w * self.velocity + (self.c1 * random.uniform(0, 1) * (self.pbest - self.position)) + (
+                    self.c2 * random.uniform(0, 1) * (gbest - self.position))
 
     def updatePosition(self):
         """
@@ -63,7 +66,10 @@ class Particle:
         """
         self.position = self.position + self.velocity
 
-        # TODO: implement checking bounds for the updated position here.
+        # TODO: implement custom checking bounds for the updated position here.
+        for i in self.position:
+            if (i > self.bounds[1]) or (i < self.bounds[0]) :
+                i = random.uniform(low=self.bounds[0], high=self.bounds[1], size=self.dimension)
 
     def updatePbest(self, mode):
         """
