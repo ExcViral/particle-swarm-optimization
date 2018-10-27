@@ -33,4 +33,17 @@ class Particle:
         self.position = random.uniform(low=bounds[0], high=bounds[1], size=dimension) # randomly initialize start pos
         self.velocity = random.uniform(low=bounds[0], high=bounds[1], size=dimension) # randomly initialize start vel
         self.pbest = self.position # initially the first position will be best position of the particle
+        self.w = w # storing w as global class variable
+        self.c1 = c1 # storing c1 as global class variable
+        self.c2 = c2 # storing c2 as global class variable
 
+    def updateVelocity(self, gbest):
+        """
+        function to update the velocity of the particle according to the following expression:
+
+        Velocity(T+1) = w * Velocity(T) + c1 * random_num1 * (pbest - position) + c2 * random_num2 * (gbest - position)
+
+        :param gbest: global best position of the swarm
+        """
+        self.velocity = self.w * self.velocity + self.c1 * random.uniform(-0.5, 0.5) * (self.pbest - self.position) \
+                        + self.c2 * random.uniform(-0.5, 0.5) * (gbest - self.position)
