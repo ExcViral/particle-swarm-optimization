@@ -32,6 +32,8 @@ class Swarm:
         """
         # initialize global variables
         self.allGbests = []  # list to store all the gbests till some iteration
+        self.maxiterations = maxiterations  # maximum number of iterations allowed
+        self.mode = mode  # store the mode of the problem
 
         # initialize population
         self.swarm = []
@@ -39,8 +41,38 @@ class Swarm:
             self.swarm.append(Particle(w, c1, c2, dimension, bounds))
 
         # initialize gbest
-        self.gbest = self.updateGbest(self.swarm, mode)
+        self.gbest = self.updateGbest(self.swarm, self.mode)
 
+    def optimize(self):
+        """
+        This function will start the optimization process of PSO.
+
+        -----Steps-----
+        Step 1 : For each particle’s position (p) evaluate fitness, and update its pbest
+        Step 2 : Set best of pBests as gBest
+        Step 3 : Update particles' velocity
+        Step 4 : Update particles' position
+        Step 5 : Check for convergence, stop and return gbest, if convergence is achieved, else GOTO: Step 1
+
+        :return: gbest - the solution of the optimization process
+        """
+        for i in range(self.maxiterations):
+            print("Iteration number: ", i)
+            # Step 1
+            for j in range(len(self.swarm)):
+                self.swarm[j].updatePbest(self.mode)
+            # Step 2
+            self.updateGbest(self.swarm, self.mode)
+            # Step 3
+            for j in range(len(self.swarm)):
+                self.swarm[j].updateVelocity(self.gbest)
+            # Step 4
+            for j in range(len(self.swarm)):
+                self.swarm[j].updatePosition()
+            # Step 5
+            if self.checknstop():
+                break
+        return self.gbest
 
     def updateGbest(self, population, mode):
         """
@@ -79,6 +111,7 @@ class Swarm:
         This function will check if convergence or max iterations has reached, and stop the optimization process. It is
         assumed that the convergence is reached if the value of gbests is not changing over a few iterations.
 
+        :param iteration_number: indicates the current iteration number of the process
         :return: True, if convergence is reached, else False
         """
         if len(self.allGbests) > 30:
