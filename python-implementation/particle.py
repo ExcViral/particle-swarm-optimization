@@ -32,7 +32,7 @@ class Particle:
         :param bounds: [lower-bound, upper-bound] within which the particle must lie
         """
         self.position = random.uniform(low=bounds[0], high=bounds[1], size=dimension)  # randomly initialize start pos
-        self.velocity = random.uniform(low=bounds[0], high=bounds[1], size=dimension)  # randomly initialize start vel
+        self.velocity = random.uniform(-0.5, 0.5, size=dimension)  # randomly initialize start velocity
         self.pbest = self.position  # initially the first position will be best position of the particle
         self.pbestFitness = self.fitness(self.pbest)  # store the fitness of the initial best position
         self.w = w  # storing w as global class variable
@@ -81,7 +81,7 @@ class Particle:
                 return
         elif mode == "max":
             currentPosFitness = self.fitness(self.position)
-            if currentPosFitness < self.pbestFitness:
+            if currentPosFitness > self.pbestFitness:
                 self.pbest = self.position
                 self.pbestFitness = currentPosFitness
                 return
