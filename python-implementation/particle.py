@@ -20,7 +20,7 @@ class Particle:
 
     def __init__(self, w, c1, c2, dimension, bounds):
         """
-        function to initialize a particle within a given range, and also to store the constants for the particle.
+        Function to initialize a particle within a given range, and also to store the constants for the particle.
 
         NOTE: this implementation assumes that all the variables of the problem will lie within a common range provided
         in the bounds, if this is not true, you may have to modify this feature.
@@ -31,16 +31,17 @@ class Particle:
         :param dimension: dimension of the vector, viz, number of variables in the problem
         :param bounds: [lower-bound, upper-bound] within which the particle must lie
         """
-        self.position = random.uniform(low=bounds[0], high=bounds[1], size=dimension) # randomly initialize start pos
-        self.velocity = random.uniform(low=bounds[0], high=bounds[1], size=dimension) # randomly initialize start vel
-        self.pbest = self.position # initially the first position will be best position of the particle
-        self.w = w # storing w as global class variable
-        self.c1 = c1 # storing c1 as global class variable
-        self.c2 = c2 # storing c2 as global class variable
+        self.position = random.uniform(low=bounds[0], high=bounds[1], size=dimension)  # randomly initialize start pos
+        self.velocity = random.uniform(low=bounds[0], high=bounds[1], size=dimension)  # randomly initialize start vel
+        self.pbest = self.position  # initially the first position will be best position of the particle
+        self.pbestFitness = self.fitness(self.pbest)  # store the fitness of the initial best position
+        self.w = w  # storing w as global class variable
+        self.c1 = c1  # storing c1 as global class variable
+        self.c2 = c2  # storing c2 as global class variable
 
     def updateVelocity(self, gbest):
         """
-        function to update the velocity of the particle according to the following expression:
+        Function to update the velocity of the particle according to the following expression:
 
         Velocity(T+1) = w * Velocity(T) + c1 * random_num1 * (pbest - position) + c2 * random_num2 * (gbest - position)
 
@@ -51,7 +52,7 @@ class Particle:
 
     def updatePosition(self):
         """
-        function to update the position of the particle according to the following expression:
+        Function to update the position of the particle according to the following expression:
 
         Position(T+1) = Position(T) + Velocity(T+1)
 
@@ -61,3 +62,43 @@ class Particle:
         :return:
         """
         self.position = self.position + self.velocity
+
+        # TODO: implement checking bounds for the updated position here.
+
+    def updatePbest(self, mode):
+        """
+        This function checks the fitness of the particle at its current position, and compares it with its previous best
+        position, i.e. previous pbest, and updates pbest with current position if current postion is better, else pbest
+        is not changed.
+
+        :param mode: mode indicates whether the problem is to be minimized or maximized
+        """
+        if mode == "min":
+            currentPosFitness = self.fitness(self.position)
+            if currentPosFitness < self.pbestFitness:
+                self.pbest = self.position
+                self.pbestFitness = currentPosFitness
+                return
+        elif mode == "max":
+            currentPosFitness = self.fitness(self.position)
+            if currentPosFitness < self.pbestFitness:
+                self.pbest = self.position
+                self.pbestFitness = currentPosFitness
+                return
+        else:
+            raise Exception(mode, "is not a valid parameter, accepted parameters: 'min' or 'max'")
+
+    def fitness(self, position):
+        """
+        Function to check the fitness of the particle. The fitness of the particle is the indication of how near the
+        position of the particle is to that of the solution.
+
+        :param position: position (solution) whose fitness is to be evaluated
+        :return: fitness value of the particle
+        """
+
+        # TODO: Implement your fitness function here
+
+        fitness = 0
+
+        return fitness
