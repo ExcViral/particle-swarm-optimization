@@ -59,18 +59,20 @@ class Swarm:
         :return: gbest - the solution of the optimization process
         """
         for i in range(self.maxiterations):
-            # print("Iteration number: ",i)
+            print("Iteration number: ",i)
             self.updateGbest(self.swarm)
-            self.allGbests.append(self.gbest)
+            self.allGbests.append(self.bestParticle.pbestFitness)
             # print(self.gbest, self.bestParticle.pbestFitness)
 
             for j in range(len(self.swarm)):
                 self.swarm[j].updateVelocity(self.gbest)
                 self.swarm[j].updatePosition()
                 self.swarm[j].updatePbest(self.mode)
-            if self.checknstop():
-                break
-        return self.bestParticle.pbestFitness
+            # if self.checknstop():
+            #     break
+            print("position : ", self.bestParticle.position, " pbest : ", self.bestParticle.pbest, " fitness : ",
+              self.bestParticle.pbestFitness, " gbest : ", self.gbest)
+        return self.gbest
 
     def updateGbest(self, population):
         """
@@ -99,3 +101,15 @@ class Swarm:
         if len(self.allGbests) > 50:
             self.allGbests.pop(0)
             return self.allGbests[1:] == self.allGbests[:-1]
+
+    def plotConvergenceGraph(self):
+        """
+        Function to plot the change in fitness of best particle over iterations
+        :return:
+        """
+        # fitnesses = [fitness(i) for i in best_pop_tracker2]
+        plt.ylim(top = 100)
+        plt.plot(list(range(len(self.allGbests))), self.allGbests)
+        plt.xlabel('Generations')
+        plt.ylabel('Fitness')
+        plt.show()
