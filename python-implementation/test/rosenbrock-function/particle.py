@@ -100,7 +100,11 @@ class Particle:
         :param position: position (solution) whose fitness is to be evaluated
         :return: fitness value of the particle
         """
-        # print(position)
-        fitness = math.sin(position[0])  # + math.cos(position[1])
-
-        return fitness
+        # extract x1, x2, x3
+        x1 = position[0]
+        x2 = position[1]
+        x3 = position[2]
+        # Now calculate the fitness
+        fitness_val = (100 * ((x2 - x1) * (x2 - x1)) + ((1 - x1) * (1 - x1))) + (
+                100 * ((x3 - x2) * (x3 - x2)) + ((1 - x2) * (1 - x2)))
+        return fitness_val
