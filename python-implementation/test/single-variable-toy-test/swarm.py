@@ -59,7 +59,7 @@ class Swarm:
         :return: gbest - the solution of the optimization process
         """
         for i in range(self.maxiterations):
-            # print("Iteration number: ",i)
+            print("Iteration number: ",i)
             self.updateGbest(self.swarm)
             self.allGbests.append(self.gbest)
             # print(self.gbest, self.bestParticle.pbestFitness)
@@ -68,9 +68,10 @@ class Swarm:
                 self.swarm[j].updateVelocity(self.gbest)
                 self.swarm[j].updatePosition()
                 self.swarm[j].updatePbest(self.mode)
-        #     if self.checknstop():
-        #         break
-        return self.bestParticle.pbestFitness
+            if self.checknstop():
+                break
+        #     print("position : ", self.bestParticle.position, " pbest : ", self.bestParticle.pbest, " fitness : ", self.bestParticle.pbestFitness, " gbest : ", self.gbest)
+        return self.gbest
 
     def updateGbest(self, population):
         """
@@ -96,6 +97,6 @@ class Swarm:
         :param iteration_number: indicates the current iteration number of the process
         :return: True, if convergence is reached, else False
         """
-        if len(self.allGbests) > 30:
+        if len(self.allGbests) > 50:
             self.allGbests.pop(0)
             return self.allGbests[1:] == self.allGbests[:-1]
