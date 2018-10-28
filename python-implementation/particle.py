@@ -67,9 +67,9 @@ class Particle:
         self.position = self.position + self.velocity
 
         # TODO: implement custom checking bounds for the updated position here.
-        for i in self.position:
-            if (i > self.bounds[1]) or (i < self.bounds[0]) :
-                i = random.uniform(low=self.bounds[0], high=self.bounds[1], size=self.dimension)
+        for i in range(len(self.position)):
+            if (self.position[i] > self.bounds[1]) or (self.position[i] < self.bounds[0]) :
+                self.position[i] = random.uniform(low=self.bounds[0], high=self.bounds[1], size=self.dimension)
 
     def updatePbest(self, mode):
         """

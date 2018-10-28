@@ -43,7 +43,7 @@ class Swarm:
 
         # initialize gbest
         self.gbest = self.updateGbest(self.swarm)
-        print(self.gbest)
+        # print(self.gbest)
 
     def optimize(self):
         """

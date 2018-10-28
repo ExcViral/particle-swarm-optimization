@@ -43,7 +43,7 @@ class Swarm:
 
         # initialize gbest
         self.gbest = self.updateGbest(self.swarm)
-        print(self.gbest)
+        # print(self.gbest)
 
     def optimize(self):
         """
@@ -68,8 +68,8 @@ class Swarm:
                 self.swarm[j].updateVelocity(self.gbest)
                 self.swarm[j].updatePosition()
                 self.swarm[j].updatePbest(self.mode)
-        #     if self.checknstop():
-        #         break
+            if self.checknstop():
+                break
         return self.bestParticle.pbestFitness
 
     def updateGbest(self, population):
@@ -96,6 +96,6 @@ class Swarm:
         :param iteration_number: indicates the current iteration number of the process
         :return: True, if convergence is reached, else False
         """
-        if len(self.allGbests) > 30:
+        if len(self.allGbests) > 50:
             self.allGbests.pop(0)
             return self.allGbests[1:] == self.allGbests[:-1]

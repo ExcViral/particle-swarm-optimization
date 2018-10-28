@@ -65,9 +65,9 @@ class Particle:
         """
         self.position = self.position + self.velocity
 
-        for i in self.position:
-            if (i > self.bounds[1]) or (i < self.bounds[0]) :
-                i = random.uniform(low=self.bounds[0], high=self.bounds[1], size=self.dimension)
+        for i in range(len(self.position)):
+            if (self.position[i] > self.bounds[1]) or (self.position[i] < self.bounds[0]) :
+                self.position[i] = random.uniform(low=self.bounds[0], high=self.bounds[1], size=self.dimension)
 
     def updatePbest(self, mode):
         """
@@ -104,32 +104,3 @@ class Particle:
         fitness = math.sin(position[0])  # + math.cos(position[1])
 
         return fitness
-
-
-# Testing if class particle is working as expected
-
-# a = Particle(1, 2, 2, 1, [-1, 1])
-
-# print("position: ",a.position)
-# print("*********velocity: ",a.velocity)
-#
-# a.updateVelocity(a.position)
-# a.updatePosition()
-# a.updatePbest("max")
-#
-# print("position: ",a.position)
-# print("*********velocity: ",a.velocity)
-#
-# a.updateVelocity(a.position)
-# a.updatePosition()
-# a.updatePbest("max")
-#
-# print("position: ",a.position)
-# print("*********velocity: ",a.velocity)
-#
-# for i in range(100):
-#     a.updateVelocity([1])
-#     a.updatePosition()
-#     a.updatePbest("max")
-#     print("position: ", a.position, "***velocity: ", a.velocity, "***pbest: ", a.pbest)
-#     # print()
